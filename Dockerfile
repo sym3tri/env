@@ -1,8 +1,13 @@
 FROM ubuntu:12.10
 MAINTAINER Ed Rooth
 
-# Install NodeJS
+# apt update
 RUN apt-get -y update
+
+# Install system tools
+RUN apt-get install -y git wget curl
+
+# Install NodeJS
 RUN apt-get install -y software-properties-common python-software-properties python g++ make
 RUN add-apt-repository -y ppa:chris-lea/node.js
 RUN apt-get -y update
