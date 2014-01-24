@@ -6,7 +6,6 @@ Vagrant.require_version ">= 1.4.3"
 VAGRANTFILE_API_VERSION = "2"
 BOX_NAME = ENV['BOX_NAME'] || "ubuntu"
 BOX_URI = ENV['BOX_URI'] || "http://files.vagrantup.com/precise64.box"
-FORWARD_DOCKER_PORTS = ENV['FORWARD_DOCKER_PORTS']
 SSH_PRIVKEY_PATH = ENV["SSH_PRIVKEY_PATH"]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -16,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "~/dotfiles", "/data/dotfiles"
   config.ssh.forward_agent = true
   if SSH_PRIVKEY_PATH
-      config.ssh.private_key_path = SSH_PRIVKEY_PATH
+    config.ssh.private_key_path = SSH_PRIVKEY_PATH
   end
 
   config.vm.provision "docker" do |d|
@@ -26,10 +25,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #args: "-v '/vagrant:/var/www'"
   end
 
-  #if !FORWARD_DOCKER_PORTS.nil?
-    #(49000..49900).each do |port|
-      #config.vm.network :forwarded_port, :host => port, :guest => port
-    #end
+  #config.vm.provider :virtualbox do |vb|
+    #vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    #vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   #end
+
+  config.vm.network :forwarded_port, guest: 8000, host: 8000
+
+  # docker run -v /data/dev:/container/dev -p 8000:8000 -d 487e node /container/dev/server.js
 
 end

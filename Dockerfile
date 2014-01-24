@@ -13,3 +13,5 @@ RUN add-apt-repository -y ppa:chris-lea/node.js
 RUN apt-get -y update
 RUN apt-get install -y nodejs
 
+# Expose node app port
+EXPOSE 8000
