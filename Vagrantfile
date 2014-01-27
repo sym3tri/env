@@ -13,6 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_url = BOX_URI
   config.vm.synced_folder "~/dev", "/data/dev"
   config.vm.synced_folder "~/dotfiles", "/data/dotfiles"
+  config.vm.network :forwarded_port, guest: 8000, host: 8000
   config.ssh.forward_agent = true
   if SSH_PRIVKEY_PATH
     config.ssh.private_key_path = SSH_PRIVKEY_PATH
@@ -25,13 +26,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #args: "-v '/vagrant:/var/www'"
   end
 
+  #docker run -v /data/dev:/container/dev -p 8000:8000 -i -t <image-name> node /container/dev/<app-to-run>.js
+
   #config.vm.provider :virtualbox do |vb|
     #vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     #vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   #end
-
-  config.vm.network :forwarded_port, guest: 8000, host: 8000
-
-  # docker run -v /data/dev:/container/dev -p 8000:8000 -d 487e node /container/dev/server.js
 
 end
