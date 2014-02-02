@@ -28,9 +28,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   #docker run -v /data/dev:/container/dev -p 8000:8000 -i -t <image-name> node /container/dev/<app-to-run>.js
 
-  #config.vm.provider :virtualbox do |vb|
-    #vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    #vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  #end
+  # Fix docker not being able to resolve private registry in VirtualBox
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  end
 
 end
